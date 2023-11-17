@@ -1,7 +1,7 @@
 
 const InputFile = function(){
    return (
-      <div className="px-2 py-3 sm:px-4 sm:py-6 bg-slate-100 rounded-lg flex flex-col justify-center gap-5
+      <div className="px-2 py-3 h-[35rem] sm:px-4 sm:py-6 bg-slate-100 rounded-lg flex flex-col justify-center gap-5
       shadow-lg"> 
          <h2 className="font-semibold text-xl tracking-wide text-center">Input</h2>
 

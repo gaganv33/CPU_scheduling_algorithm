@@ -1,3 +1,5 @@
+import Table from "./Table";
+
 
 const OutputFile = function() {
    const finishTime = [0, 2, 6, 12, 20, 30, 40, 45, 0, 2, 6, 12, 20, 30, 40, 45, 0, 2, 6, 12, 20, 30, 40, 45, 0, 2, 6, 12, 20, 30, 40, 45];
@@ -25,6 +27,17 @@ const OutputFile = function() {
                   })
                }
             </div>
+         </div>
+         <div className="bg-slate-200 px-2 py-1 sm:px-4 sm:py-2 w-full">
+            <h1 className="text-center font-semibold">Abbreviation</h1>
+            <h2>AT - Arrival Time</h2>
+            <h2>BT - Burst Time</h2>
+            <h2>CT - Completion Time</h2>
+            <h2>TT - Turnaround Time</h2>
+            <h2>WT - Waiting Time</h2>
+         </div>
+         <div className="w-full">
+            <Table />
          </div>
       </div>
    );
