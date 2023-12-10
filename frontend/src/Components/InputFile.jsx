@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
@@ -8,7 +9,7 @@ const InputFile = function({ setIsError, setMessage }){
    const [burstTime, setBurstTime] = useState("");
    const [priorityValue, setPriorityValue] = useState("");
 
-   function Submit() {
+   async function Submit() {
       
       const arrivalTimeArray = arrivalTime.trim().split(" ");
       const burstTimeArray = burstTime.trim().split(" ");
@@ -17,6 +18,12 @@ const InputFile = function({ setIsError, setMessage }){
       const n = arrivalTimeArray.length;
       const m = burstTimeArray.length;
       const k = priorityValueArray.length;
+
+      if(m !== n) {
+         setMessage("Number of arrival time elements should be equal to number of burst time elements.");
+         setIsError(true);
+         return;
+      }
 
       const arrivalArray = [];
       const burstArray = [];
@@ -52,30 +59,42 @@ const InputFile = function({ setIsError, setMessage }){
          }
       }
 
-      for(let i = 0; i < k; i = i + 1) {
-         const value = parseInt(priorityValueArray[i]);
-         if(value >= 0 && value <= 9) {
-            priorityArray.push(value);
+      if(algorithm === "PNP" || algorithm === "PP") {
+         for(let i = 0; i < k; i = i + 1) {
+            const value = parseInt(priorityValueArray[i]);
+            if(value >= 0 && value <= 9) {
+               priorityArray.push(value);
+            }
+            else{
+               setMessage("Invalid input");
+               setIsError(true);
+               return;
+            }
          }
-         else{
-            setMessage("Invalid input");
-            setIsError(true);
-            return;
+      }
+      else {
+         for(let i = 0; i < m; i = i + 1) {
+            priorityArray.push(-1);
          }
       }
 
-      if(m !== n) {
-         setMessage("Number of arrival time elements should ne equal to number of burst time elements");
-         setIsError(true);
-         return;
-      }
-
-      if(k !== m) {
+      if(priorityArray.length !== burstArray.length) {
          setMessage("Number of priority value elements should be equal to number of arrival time and burst time elements");
          setIsError(true);
          return;
       }
-      
+
+      await axios.get("http://localhost:8080/clear");
+
+      const len = arrivalArray.length;
+      for(let i = 0; i < len; i = i + 1) {
+         await axios.post("http://localhost:8080/saveData", {
+            "arrivalTime": arrivalArray[i],
+            "burstTime" : burstArray[i],
+            "priorityValue": priorityArray[i]
+         })
+      }
+
    }
 
    return (
@@ -112,12 +131,16 @@ const InputFile = function({ setIsError, setMessage }){
                 onChange={(e) => setBurstTime(e.target.value)} />
             </div>
 
-            <div className="flex flex-col justify-start gap-2">
-               <label htmlFor="priority">Priority Value</label>
-               <input type="text" className="px-3 py-2 sm:py-3 rounded-lg outline-none  focus:ring-slate-500 
-               focus:ring-2" placeholder="Lower value higher priority" id="priority" value={priorityValue !== "" ? priorityValue : ""}
-                onChange={(e) => setPriorityValue(e.target.value)} />
-            </div>
+            {
+               (algorithm === "PNP" || algorithm === "PP") && (
+                  <div className="flex flex-col justify-start gap-2">
+                     <label htmlFor="priority">Priority Value</label>
+                     <input type="text" className="px-3 py-2 sm:py-3 rounded-lg outline-none  focus:ring-slate-500 
+                     focus:ring-2" placeholder="Lower value higher priority" id="priority" value={priorityValue !== "" ? priorityValue : ""}
+                     onChange={(e) => setPriorityValue(e.target.value)} />
+                  </div>
+               )
+            }
 
          </div>
          <div className="w-full flex items-center justify-center">
