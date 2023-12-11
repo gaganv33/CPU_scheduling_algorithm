@@ -8,6 +8,8 @@ const App = function(){
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
 
+  const [output, setOutput] = useState(null);
+
   return (
     <div className="px-5 py-5 sm:px-10 sm:py-10">
       {
@@ -18,8 +20,10 @@ const App = function(){
         )
       }
       <div className="flex flex-col sm:grid sm:grid-cols-[30%_auto] gap-4"> 
-        <InputFile setIsError={setIsError} setMessage={setMessage} />
-        <OutputFile />
+        <InputFile setIsError={setIsError} setMessage={setMessage} setOutput={setOutput} />
+        {
+          output !== null && <OutputFile output={output} />
+        }
       </div>
     </div>
   );

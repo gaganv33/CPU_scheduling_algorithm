@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const InputFile = function({ setIsError, setMessage }){
+const InputFile = function({ setIsError, setMessage, setOutput }){
 
    const [algorithm, setAlgorithm] = useState("FCFS");
    const [arrivalTime, setArrivalTime] = useState("");
@@ -31,7 +31,7 @@ const InputFile = function({ setIsError, setMessage }){
 
       for(let i = 0; i < n; i = i + 1) {
          const value = parseInt(arrivalTimeArray[i]);
-         if(value >= 0 && value <= 9) {
+         if(value >= 0 && value <= Number.MAX_VALUE) {
             arrivalArray.push(value);
          }
          else{
@@ -49,7 +49,7 @@ const InputFile = function({ setIsError, setMessage }){
             return;
 
          }
-         if(value > 0 && value <= 9) {
+         if(value > 0 && value <= Number.MAX_VALUE) {
             burstArray.push(value);
          }
          else{
@@ -62,7 +62,7 @@ const InputFile = function({ setIsError, setMessage }){
       if(algorithm === "PNP" || algorithm === "PP") {
          for(let i = 0; i < k; i = i + 1) {
             const value = parseInt(priorityValueArray[i]);
-            if(value >= 0 && value <= 9) {
+            if(value >= 0 && value <= Number.MAX_VALUE) {
                priorityArray.push(value);
             }
             else{
@@ -94,6 +94,18 @@ const InputFile = function({ setIsError, setMessage }){
             "priorityValue": priorityArray[i]
          })
       }
+
+      const response = await axios.get("http://localhost:8080/fcfs");
+      const data = response.data;
+      
+      await setOutput({
+         "arrival_time" : data[0],
+         "burst_time" : data[1],
+         "completion_time" : data[2],
+         "turnaround_time" : data[3],
+         "waiting_time" : data[4],
+         "length" : len
+      })
 
    }
 

@@ -1,7 +1,25 @@
+/* eslint-disable react/prop-types */
 
-const Table = function() {
+const Table = function({ output }) {
 
-   const data = [[1, 2, 3, 4, 5, 6], [8, 2, 3, 4, 5, 6], [9, 2, 3, 4, 5, 6], [10, 2, 3, 4, 5, 6]];
+   const data = [];
+   
+   const arrival_time_array = output.arrival_time;
+   const burst_time_array = output.burst_time;
+   const completion_time_array = output.completion_time;
+   const turnaround_time_array = output.turnaround_time;
+   const waiting_time_array = output.waiting_time;
+
+   for(let i = 0; i < output.length; i = i + 1) {
+      const array = [];
+      array.push(i);
+      array.push(arrival_time_array[i]);
+      array.push(burst_time_array[i]);
+      array.push(completion_time_array[i]);
+      array.push(turnaround_time_array[i]);
+      array.push(waiting_time_array[i]);
+      data.push(array);
+   }
 
    return (
       <div className=" flex flex-col gap-2 px-4 overflow-y-scroll">
