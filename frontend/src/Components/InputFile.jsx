@@ -104,7 +104,8 @@ const InputFile = function({ setIsError, setMessage, setOutput }){
          "completion_time" : data[2],
          "turnaround_time" : data[3],
          "waiting_time" : data[4],
-         "length" : len
+         "length" : len,
+         "algorithm" : "FCFS"
       })
 
    }

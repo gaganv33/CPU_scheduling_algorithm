@@ -35,7 +35,7 @@ const OutputFile = function({ output }) {
          {/* Grantt Chart and table will be shown here */}
          <div className="flex justify-between items-center items-between w-full">
             <h1 className="text-xl font-semibold tracking-wide">Output</h1>
-            <span className="text-lg text-green-700 bg-green-200 rounded-md px-2 py-1 sm:px-3">SJF</span>
+            <span className="text-lg text-green-700 bg-green-200 rounded-md px-2 py-1 sm:px-3">{output.algorithm}</span>
          </div>
          <div className="flex flex-col items-center w-[85%]">
             <div className="flex flex-row flex-wrap gap-y-5 divide-x-2 divide-slate-50">
